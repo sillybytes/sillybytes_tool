@@ -22,12 +22,17 @@ function banner
 
 function display_error
 {
-    echo -e "\e[41m\e[90m[x]\e[0m \e[31m$1\e[0m"
+    echo -e "\e[41m\e[37m[x]\e[0m \e[31m$1\e[0m"
 }
 
 function display_success
 {
-    echo -e "\e[42m\e[90m[✓]\e[0m \e[32m$1\e[0m"
+    echo -e "\e[42m\e[37m[✓]\e[0m \e[32m$1\e[0m"
+}
+
+function display_warning
+{
+    echo -e "\e[43m\e[37m[⚠]\e[0m \e[33m$1\e[0m"
 }
 
 function deploy
