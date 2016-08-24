@@ -37,7 +37,10 @@ function display_warning
 
 function deploy
 {
-    # if [[ ! -d "$GH_PAGE" ]]; then
+    if [[ ! -d "$GH_PAGE" ]]; then
+        display_error "Repo not found at $GH_PAGE"
+        exit 1
+    fi
 
     cd $GH_PAGE
     git stash -q --keep-index
@@ -57,6 +60,9 @@ function deploy
 
 
 banner
+display_error hola
+display_warning hola
+display_success hola
 case "$1" in
     'deploy')
         deploy
