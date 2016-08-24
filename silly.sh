@@ -43,8 +43,13 @@ function deploy
     fi
 
     cd $GH_PAGE
+
+    if [[ "$(git symbolic-ref -q HEAD | cut -d '/' -f3)" != "hakyll" ]]; then
+        display_error "Not in 'Hakyll' branch"
+        exit 1
+    fi
+
     git stash -q --keep-index
-    git checkout hakyll
     stack build
     stack exec sillybytes rebuild
     git fetch --all
@@ -53,21 +58,25 @@ function deploy
     git add -A
     git commit -m "Build `date +'%F'`"
     git push origin master:master
+
+    if [[ $? -ne 0 ]]; then
+        display_warning "Pushing to master branch may have failed"
+    fi
+
     git checkout hakyll
     git branch -D master
     git stash pop -q
+    echo
+    display_success "Deployed"
 }
 
 
 banner
-display_error hola
-display_warning hola
-display_success hola
 case "$1" in
     'deploy')
         deploy
         ;;
     *)
-        echo "WAT?"
+        display_error "Invalid Command"
         ;;
 esac
