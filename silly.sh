@@ -7,7 +7,6 @@ PROMPT="⚙  "
 function banner
 {
     echo
-    echo
     echo -e '\e[33m'
     echo '  ____  _ _ _               ____        _             '
     echo ' / ___|(_) | |_   _        | __ ) _   _| |_ ___  ___  '
@@ -16,7 +15,6 @@ function banner
     echo ' |____/|_|_|_|\__, |       |____/ \__, |\__\___||___/ '
     echo '              |___/               |___/               '
     echo -e '\e[0m'
-    echo
     echo
 }
 
@@ -33,6 +31,13 @@ function display_success
 function display_warning
 {
     echo -e "\e[43m\e[37m[⚠]\e[0m \e[33m$1\e[0m"
+}
+
+function display_usage
+{
+    echo "Available commands:"
+    echo -e "   New    \t Generate boilerplate for new entry"
+    echo -e "   Deploy \t Deploy update"
 }
 
 function deploy
@@ -77,6 +82,6 @@ case "$1" in
         deploy
         ;;
     *)
-        display_error "Invalid Command"
+        display_usage
         ;;
 esac
