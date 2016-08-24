@@ -20,9 +20,20 @@ function banner
     echo
 }
 
+function display_error
+{
+    echo -e "\e[41m\e[90m[x]\e[0m \e[31m$1\e[0m"
+}
+
+function display_success
+{
+    echo -e "\e[42m\e[90m[✓]\e[0m \e[32m$1\e[0m"
+}
+
 function deploy
 {
-    banner
+    # if [[ ! -d "$GH_PAGE" ]]; then
+
     cd $GH_PAGE
     git stash -q --keep-index
     git checkout hakyll
@@ -40,6 +51,7 @@ function deploy
 }
 
 
+banner
 case "$1" in
     'deploy')
         deploy
