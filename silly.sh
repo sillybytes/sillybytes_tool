@@ -36,8 +36,8 @@ function display_warning
 function display_usage
 {
     echo "Available commands:"
-    echo -e "   New    \t Generate boilerplate for new entry"
-    echo -e "   Deploy \t Deploy update"
+    echo -e "   new    \t Generate boilerplate for new post"
+    echo -e "   deploy \t Deploy update"
 }
 
 function deploy
