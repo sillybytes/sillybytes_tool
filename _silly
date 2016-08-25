@@ -1,0 +1,3 @@
+#compdef silly
+
+_arguments "1: :(new deploy)"

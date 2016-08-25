@@ -71,6 +71,7 @@ function deploy
     git checkout hakyll
     git branch -D master
     git stash pop -q
+
     echo
     display_success "Deployed"
 }
