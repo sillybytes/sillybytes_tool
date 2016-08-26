@@ -36,6 +36,7 @@ function display_warning
 function display_usage
 {
     echo "Available commands:"
+    echo -e "   go     \t Go to www.sillybytes.net"
     echo -e "   new    \t Generate boilerplate for new post"
     echo -e "   deploy \t Deploy update"
 }
@@ -79,6 +80,9 @@ function deploy
 
 banner
 case "$1" in
+    'go')
+        xdg-open "http://www.sillybytes.net"
+        ;;
     'deploy')
         deploy
         ;;
