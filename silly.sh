@@ -72,6 +72,32 @@ function build
     sed -n '1!p' post.md | pandoc -o post.html
 }
 
+function new
+{
+    echo "Post name?"
+    echo -n "$PROMPT"
+    read post_name_raw
+
+    if [[ "$post_name_raw" == "" ]]; then
+        display_info "Nothing to do"
+        exit 0
+    fi
+
+    post_name=$(echo "$post_name_raw" | sed 's/ /_/g')
+
+    if [[ -d "$SB_PATH/$post_name" ]]; then
+        echo
+        display_warning "Post \"$post_name_raw\" already exists"
+        exit 2
+    fi
+
+    cd "$SB_PATH"
+    mkdir "$post_name"
+    cd "$post_name"
+    post_name_capitalized=$(echo "$post_name_raw" | sed 's/.*/\u&/')
+    echo -e "# $post_name_capitalized\n\n" > post.md
+}
+
 
 function deploy
 {
@@ -104,6 +130,9 @@ case "$1" in
         ;;
     'build'|'generate')
         build
+        ;;
+    'new')
+        new
         ;;
     'clean')
         clean
