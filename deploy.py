@@ -64,7 +64,7 @@ def main(argv):
 
     try:
         posts = service.posts()
-        request = posts.insert(blogId=SILLYBYTESID, body=body, isDraft=True)
+        request = posts.insert(blogId=SILLYBYTESID, body=body, isDraft=False)
         result = request.execute()
     except:
         print("Can't execute request")
