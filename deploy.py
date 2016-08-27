@@ -32,7 +32,7 @@ def main(argv):
     flags = parser.parse_args("")
 
     try:
-        client_secrets = os.path.join(os.path.dirname(__file__),
+        client_secrets = os.path.join(os.path.expanduser("~") + '/.sillybytes/',
                                     'secrets.json')
     except:
         print("Can't find secrets.json file maybe?")
