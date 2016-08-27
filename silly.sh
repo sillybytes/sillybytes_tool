@@ -43,38 +43,6 @@ function display_usage
 
 function deploy
 {
-    if [[ ! -d "$GH_PAGE" ]]; then
-        display_error "Repo not found at $GH_PAGE"
-        exit 1
-    fi
-
-    cd $GH_PAGE
-
-    if [[ "$(git symbolic-ref -q HEAD | cut -d '/' -f3)" != "hakyll" ]]; then
-        display_error "Not in 'Hakyll' branch"
-        exit 1
-    fi
-
-    git stash -q --keep-index
-    stack build
-    stack exec sillybytes rebuild
-    git fetch --all
-    git checkout -b master --track origin/master
-    rsync -a --filter='P _site/' --filter='P _cache/' --filter='P .git/' --filter='P .gitignore' --delete-excluded _site/ .
-    git add -A
-    git commit -m "Build `date +'%F'`"
-    git push origin master:master
-
-    if [[ $? -ne 0 ]]; then
-        display_warning "Pushing to master branch may have failed"
-    fi
-
-    git checkout hakyll
-    git branch -D master
-    git stash pop -q
-
-    echo
-    display_success "Deployed"
 }
 
 
