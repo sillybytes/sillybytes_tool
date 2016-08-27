@@ -1,2 +1,2 @@
-blogger.dat
-client_secrets.json
+*.dat
+secrets.json
