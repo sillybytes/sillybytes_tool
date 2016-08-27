@@ -81,7 +81,7 @@ function deploy
     display_info "Deploying..."
 
     echo
-    python "$SCRIPT_DIR/deploy.py" "$post_title" post.html
+    url_raw=$(python "$SCRIPT_DIR/deploy.py" "$post_title" post.html)
 
     if [[ "$?" != 0 ]]; then
         echo
@@ -89,8 +89,11 @@ function deploy
         exit 1
     fi
 
+    url=$(echo "$url_raw" | sed 's/Live: //')
     display_success "Deployed!"
+    xdg-open "$url" > /dev/null
 }
+
 
 banner
 case "$1" in

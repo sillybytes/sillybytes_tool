@@ -66,6 +66,7 @@ def main(argv):
         posts = service.posts()
         request = posts.insert(blogId=SILLYBYTESID, body=body, isDraft=False)
         result = request.execute()
+        print("Live: " + result['url'])
     except:
         print("Can't execute request")
         exit(1)
