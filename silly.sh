@@ -41,6 +41,23 @@ function display_usage
     echo -e "   deploy \t Deploy update"
 }
 
+function test_premises
+{
+    if [[ ! -f "post.md" ]]; then
+        display_error "\"post.md\" file not found"
+        exit 1
+    fi
+}
+
+function generate
+{
+    test_premises
+
+    rm -f post.html
+    sed -n '1!p' post.md | pandoc -o post.html
+}
+
+
 function deploy
 {
 }
