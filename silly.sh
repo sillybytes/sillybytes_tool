@@ -2,7 +2,9 @@
 
 SB_PATH=$HOME/lab/sillybytes
 GH_PAGE=$SB_PATH/sillybytes.github.io
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROMPT="⚙  "
+
 
 function banner
 {
@@ -18,9 +20,9 @@ function banner
     echo
 }
 
-function display_error
+function display_info
 {
-    echo -e "\e[41m\e[37m[x]\e[0m \e[31m$1\e[0m"
+    echo -e "\e[46m\e[37m[•]\e[0m \e[36m$1\e[0m"
 }
 
 function display_success
@@ -33,11 +35,17 @@ function display_warning
     echo -e "\e[43m\e[37m[⚠]\e[0m \e[33m$1\e[0m"
 }
 
+function display_error
+{
+    echo -e "\e[41m\e[37m[x]\e[0m \e[31m$1\e[0m"
+}
+
+
 function display_usage
 {
     echo "Available commands:"
     echo -e "   go     \t Go to www.sillybytes.net"
-    echo -e "   new    \t Generate boilerplate for new post"
+    echo -e "   new    \t build boilerplate for new post"
     echo -e "   deploy \t Deploy update"
 }
 
@@ -49,24 +57,51 @@ function test_premises
     fi
 }
 
-function generate
+function clean
+{
+    rm -f post.html
+}
+
+function build
 {
     test_premises
 
-    rm -f post.html
+    clean
     sed -n '1!p' post.md | pandoc -o post.html
 }
 
 
 function deploy
 {
-}
+    test_premises
 
+    post_title=$(head -n 1 post.md | sed 's/# //')
+    display_info "Building \"$post_title\""
+    build
+    display_info "Deploying..."
+
+    echo
+    python "$SCRIPT_DIR/deploy.py" "$post_title" post.html
+
+    if [[ "$?" != 0 ]]; then
+        echo
+        display_error "Deploy script is complaning"
+        exit 1
+    fi
+
+    display_success "Deployed!"
+}
 
 banner
 case "$1" in
     'go')
         xdg-open "http://www.sillybytes.net"
+        ;;
+    'build'|'generate')
+        build
+        ;;
+    'clean')
+        clean
         ;;
     'deploy')
         deploy
