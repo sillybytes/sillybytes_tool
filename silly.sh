@@ -45,8 +45,10 @@ function display_usage
 {
     echo "Available commands:"
     echo -e "   go     \t Go to www.sillybytes.net"
-    echo -e "   new    \t build boilerplate for new post"
-    echo -e "   deploy \t Deploy update"
+    echo -e "   new    \t Generate boilerplate for new post"
+    echo -e "   build  \t Build current post"
+    echo -e "   clean  \t Clean current post"
+    echo -e "   deploy \t Deploy current post"
 }
 
 function test_premises
