@@ -45,81 +45,49 @@ function display_usage
 {
     echo "Available commands:"
     echo -e "   go     \t Go to www.sillybytes.net"
-    echo -e "   new    \t Generate boilerplate for new post"
-    echo -e "   build  \t Build current post"
-    echo -e "   clean  \t Clean current post"
-    echo -e "   deploy \t Deploy current post"
+    echo -e "   build  \t Rebuild Silly Bytes"
+    echo -e "   watch  \t Run development server"
+    echo -e "   deploy \t Deploy"
 }
 
-function test_premises
+function isSillyDir
 {
-    if [[ ! -f "post.md" ]]; then
-        display_error "\"post.md\" file not found"
-        exit 1
+    repo_path=$(git rev-parse --show-toplevel 2> /dev/null)
+    repo_path=${repo_path##*/}
+    if [[ "$repo_path" == "sillybytes" ]]; then
+        return 0
+    else
+        return 1
     fi
-}
-
-function clean
-{
-    rm -f post.html
 }
 
 function build
 {
-    test_premises
-
-    clean
-    sed -n '1!p' post.md | pandoc -o post.html
+    stack exec site rebuild
 }
 
-function new
+function watch
 {
-    echo "Post name?"
-    echo -n "$PROMPT"
-    read post_name_raw
-
-    if [[ "$post_name_raw" == "" ]]; then
-        display_info "Nothing to do"
-        exit 0
-    fi
-
-    post_name=$(echo "$post_name_raw" | sed 's/ /_/g')
-
-    if [[ -d "$SB_PATH/$post_name" ]]; then
-        echo
-        display_warning "Post \"$post_name_raw\" already exists"
-        exit 2
-    fi
-
-    cd "$SB_PATH"
-    mkdir "$post_name"
-    cd "$post_name"
-    post_name_capitalized=$(echo "$post_name_raw" | sed 's/.*/\u&/')
-    echo -e "# $post_name_capitalized\n\n" > post.md
+    stack exec site watch
+    xdg-open "http://localhost:8000"
 }
-
 
 function deploy
 {
-    test_premises
-
-    post_title=$(head -n 1 post.md | sed 's/# //')
-    display_info "Building \"$post_title\""
-    build
-    display_info "Deploying..."
-
-    echo
-    url_raw=$(python "$SCRIPT_DIR/deploy.py" "$post_title" post.html)
-
-    if [[ "$?" != 0 ]]; then
-        echo
-        display_error "Deploy script is complaning"
-        exit 1
+    if ! isSillyDir; then
+        display_error "You're not currently in the Silly Bytes repo"
+    else
+        display_info "Generating..."
+        stack exec site rebuild
+        if [ $? -ne 0 ]; then
+            display_error "The site couldn't be generated"
+            exit 1
+        fi
+        display_info "Deploying..."
+        git add .
+        git commit -m "Build"
+        git push origin master
     fi
-
-    url=$(echo "$url_raw" | sed 's/Live: //')
-    display_success "Deployed!"
-    xdg-open "$url" > /dev/null
 }
 
 
@@ -128,14 +96,11 @@ case "$1" in
     'go')
         xdg-open "http://www.sillybytes.net"
         ;;
-    'build'|'generate')
+    'build'|'generate'|'rebuild')
         build
         ;;
-    'new')
-        new
-        ;;
-    'clean')
-        clean
+    'watch')
+        watch
         ;;
     'deploy')
         deploy
