@@ -68,8 +68,8 @@ function build
 
 function watch
 {
-    stack exec site watch
     xdg-open "http://localhost:8000"
+    stack exec site watch
 }
 
 function deploy
