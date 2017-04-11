@@ -63,11 +63,13 @@ function isSillyDir
 
 function build
 {
+    display_info "Rebuilding..."
     stack exec site rebuild
 }
 
 function watch
 {
+    display_info "Watching..."
     xdg-open "http://localhost:8000"
     stack exec site watch
 }
@@ -89,12 +91,13 @@ function deploy
             exit 1
         fi
 
-        display_info "Deploying..."
         cp -rfv _site/* ../sillybytes.github.io/
         cd ../sillybytes.github.io
+        display_info "Deploying..."
         git add .
         git commit -m "Deploy"
         git push origin master
+        display_success "Deployed!"
     fi
 }
 
