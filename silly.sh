@@ -83,9 +83,17 @@ function deploy
             display_error "The site couldn't be generated"
             exit 1
         fi
+
+        if [ ! -d "_site" ]; then
+            display_error "Generated site _site does not exist"
+            exit 1
+        fi
+
         display_info "Deploying..."
+        cp -rfv _site/* ../sillybytes.github.io/
+        cd ../sillybytes.github.io
         git add .
-        git commit -m "Build"
+        git commit -m "Deploy"
         git push origin master
     fi
 }
