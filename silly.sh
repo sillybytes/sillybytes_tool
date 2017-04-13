@@ -91,7 +91,7 @@ function deploy
             exit 1
         fi
 
-        cp -rfv _site/* ../sillybytes.github.io/
+        cp -rf _site/* ../sillybytes.github.io/
         cd ../sillybytes.github.io
         display_info "Deploying..."
         git add .
