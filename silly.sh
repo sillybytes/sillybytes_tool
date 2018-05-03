@@ -1,7 +1,7 @@
 #!/bin/sh
 
 SB_PATH=$HOME/lab/sillybytes
-GH_PAGE=$SB_PATH/sillybytes.github.io
+GH_PAGE=$SB_PATH/alx741.github.io
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROMPT="⚙  "
 
@@ -91,8 +91,8 @@ function deploy
             exit 1
         fi
 
-        cp -rf _site/* ../sillybytes.github.io/
-        cd ../sillybytes.github.io
+        cp -rf _site/* ../alx741.github.io/
+        cd ../alx741.github.io
         display_info "Deploying..."
         git add .
         git commit -m "Deploy"
