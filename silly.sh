@@ -64,14 +64,14 @@ function isSillyDir
 function build
 {
     display_info "Rebuilding..."
-    stack exec site rebuild
+    cabal exec site rebuild
 }
 
 function watch
 {
     display_info "Watching..."
     xdg-open "http://localhost:8000"
-    stack exec site watch
+    cabal exec site watch
 }
 
 function deploy
@@ -80,7 +80,7 @@ function deploy
         display_error "You're not currently in the Silly Bytes repo"
     else
         display_info "Generating..."
-        stack exec site rebuild
+        cabal exec site rebuild
         if [ $? -ne 0 ]; then
             display_error "The site couldn't be generated"
             exit 1
